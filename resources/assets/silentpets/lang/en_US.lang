@@ -1,0 +1,55 @@
+# Block localizations
+
+tile.silentpets:example.name=Example
+tile.silentpets:example.desc=Example description
+
+
+
+# Item localizations
+
+item.silentpets:NamePlate.name=Name Plate
+item.silentpets:NamePlate.desc=Can name items or entities.
+
+item.silentpets:PetEssence.name=Pet Essence
+item.silentpets:PetEssence.desc=Made of sugar and rainbows.
+
+item.silentpets:PetEssenceRaw.name=Raw Pet Essence
+item.silentpets:PetEssenceRaw.desc=Kill some things to get it.
+
+item.silentpets:PetSummon.name=Pet Summon
+item.silentpets:PetSummon.desc=Makes new friends.
+
+item.silentpets:PetWand.name=Pet Wand (Not Coded)
+item.silentpets:PetWand.desc=Tells your BFFs what to do.
+item.silentpets:PetWand.state.carry=Pet Wand - Carry
+item.silentpets:PetWand.state.follow=Pet Wand - Follow
+item.silentpets:PetWand.state.removeArmor=Pet Wand - Remove Armor
+item.silentpets:PetWand.state.talk=Pet Wand - Talk
+
+
+
+# Entity localization
+
+entity.SilentPets.pet.chicken.name=Pet Chicken
+entity.SilentPets.pet.cow.name=Pet Cow
+entity.SilentPets.pet.pig.name=Pet Pig
+entity.SilentPets.pet.sheep.name=Pet Sheep
+
+
+
+# Misc text
+
+misc.silentpets:PressCtrl=<Press Ctrl>
+misc.silentpets:PressShift=<Press Shift>
+
+
+
+# Pet talk
+
+talk.silentpets:following0=I'm with you!
+talk.silentpets:following1=Lead the way!
+talk.silentpets:following2=Can we stop for food?
+
+talk.silentpets:sitting0=OK, I'll stay here.
+talk.silentpets:sitting1=Taking it easy!
+talk.silentpets:sitting2=Staying where I am.
