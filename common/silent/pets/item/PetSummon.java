@@ -61,7 +61,7 @@ public class PetSummon extends ItemSG {
 
     public PetSummon() {
 
-        setMaxStackSize(1);
+        setMaxStackSize(64);
         setCreativeTab(CreativeTabs.tabMisc);
         setUnlocalizedName(Names.PET_SUMMON);
     }
