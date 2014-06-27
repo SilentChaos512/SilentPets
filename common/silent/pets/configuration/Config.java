@@ -4,7 +4,6 @@ import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
 import silent.pets.core.util.LogHelper;
-import silent.pets.lib.Names;
 
 public class Config {
 
@@ -14,6 +13,7 @@ public class Config {
 
     public static ConfigOptionDouble PET_ESSENCE_DROP_CHANCE = new ConfigOptionDouble("PetEssence.DropChance", 0.15);
     public static ConfigOptionInt PET_REGEN_DELAY = new ConfigOptionInt("Pet.RegenDelay", 60);
+    public static ConfigOptionDouble PET_SUMMON_DROP_CHANCE = new ConfigOptionDouble("PetSummon.DropChance", 0.25);
 
     /*
      * Config handler
@@ -48,6 +48,7 @@ public class Config {
              */
             PET_ESSENCE_DROP_CHANCE.loadValue(c, CATEGORY_ITEM_PROPERTIES, "The probability of a mob dropping Pet Essence on death.");
             PET_REGEN_DELAY.loadValue(c, CATEGORY_PET, "The number of ticks pets take the regenerate 1 health.");
+            PET_SUMMON_DROP_CHANCE.loadValue(c, CATEGORY_ITEM_PROPERTIES, "The probablity of a pet dropping a new summon item on death");
         }
         catch (Exception e) {
             LogHelper.severe("Oh noes!!! Couldn't load configuration file properly!");

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
+import silent.pets.core.registry.SRegistry;
 import silent.pets.core.util.LocalizationHelper;
 import silent.pets.core.util.LogHelper;
 import silent.pets.core.util.RecipeHelper;
@@ -113,6 +115,17 @@ public class PetSummon extends ItemSG {
         else {
             return null;
         }
+    }
+    
+    public static ItemStack getStackForPet(Entity pet) {
+        
+        for (int i = 0; i < pets.length; ++i) {
+            if (pets[i] != null && pets[i].clazz == pet.getClass()) {
+                return new ItemStack(SRegistry.getItem(Names.PET_SUMMON), 1, i);
+            }
+        }
+        
+        return null;
     }
 
     @Override

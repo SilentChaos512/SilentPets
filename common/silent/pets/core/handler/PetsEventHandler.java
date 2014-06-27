@@ -1,10 +1,10 @@
 package silent.pets.core.handler;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import silent.pets.SilentPets;
@@ -15,6 +15,7 @@ import silent.pets.entity.EntityPet;
 import silent.pets.item.ModItems;
 import silent.pets.item.MultiItem;
 import silent.pets.item.NamePlate;
+import silent.pets.item.PetSummon;
 import silent.pets.lib.Names;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
@@ -34,7 +35,7 @@ public class PetsEventHandler {
                         namePlate = stack;
                     }
                 }
-                
+
                 if (namePlate != null) {
                     // Damage and return name plate.
                     namePlate.attemptDamageItem(1, SilentPets.instance.random);
@@ -43,12 +44,13 @@ public class PetsEventHandler {
             }
         }
     }
-    
+
     @SubscribeEvent
     public void onLivingDeathEvent(LivingDeathEvent event) {
-        
+
         if (event.entity.worldObj.isRemote) {
             if (event.entity instanceof EntityPet) {
+                // Pet death messages.
                 EntityPet pet = (EntityPet) event.entity;
                 if (pet.getOwner() instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) pet.getOwner();
@@ -62,13 +64,24 @@ public class PetsEventHandler {
 
     @SubscribeEvent
     public void onLivingDropsEvent(LivingDropsEvent event) {
+        
+        double x = event.entity.posX;
+        double y = event.entity.posY + 1.0;
+        double z = event.entity.posZ;
+        World world = event.entity.worldObj;
 
         // Drop Pet Essence sometimes when a player kills something. Looting will increase chance by one third per
         // level.
         if (event.source.damageType.equals("player")
                 && SilentPets.instance.random.nextDouble() <= Config.PET_ESSENCE_DROP_CHANCE.value * (event.lootingLevel / 3.0 + 1.0)) {
-            EntityLivingBase e = event.entityLiving;
-            event.drops.add(new EntityItem(e.worldObj, e.posX, e.posY + 1.0, e.posZ, MultiItem.getStack(Names.PET_ESSENCE_RAW)));
+            event.drops.add(new EntityItem(world, x, y, z, MultiItem.getStack(Names.PET_ESSENCE_RAW)));
+        }
+        // Sometimes drop pet summon when a pet dies.
+        if (event.entity instanceof EntityPet && SilentPets.instance.random.nextDouble() <= Config.PET_ESSENCE_DROP_CHANCE.value) {
+            ItemStack summoner = PetSummon.getStackForPet(event.entity);
+            if (summoner != null) {
+                event.drops.add(new EntityItem(world, x, y, z, summoner));
+            }
         }
     }
 }
