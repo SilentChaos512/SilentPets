@@ -46,6 +46,11 @@ misc.silentpets:PressShift=<Press Shift>
 
 # Pet talk
 
+talk.silentpets:death0=%s died a horrible death.
+talk.silentpets:death1=%s died an embarrassing death.
+talk.silentpets:death2=%s is no more.
+talk.silentpets:death3=%s has died.
+
 talk.silentpets:following0=I'm with you!
 talk.silentpets:following1=Lead the way!
 talk.silentpets:following2=Can we stop for food?

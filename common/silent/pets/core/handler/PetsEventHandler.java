@@ -2,12 +2,16 @@ package silent.pets.core.handler;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import silent.pets.SilentPets;
 import silent.pets.configuration.Config;
+import silent.pets.core.util.LocalizationHelper;
 import silent.pets.core.util.PlayerHelper;
+import silent.pets.entity.EntityPet;
 import silent.pets.item.ModItems;
 import silent.pets.item.MultiItem;
 import silent.pets.item.NamePlate;
@@ -35,6 +39,22 @@ public class PetsEventHandler {
                     // Damage and return name plate.
                     namePlate.attemptDamageItem(1, SilentPets.instance.random);
                     PlayerHelper.addItemToInventoryOrDrop(event.player, namePlate);
+                }
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public void onLivingDeathEvent(LivingDeathEvent event) {
+        
+        if (event.entity.worldObj.isRemote) {
+            if (event.entity instanceof EntityPet) {
+                EntityPet pet = (EntityPet) event.entity;
+                if (pet.getOwner() instanceof EntityPlayer) {
+                    EntityPlayer player = (EntityPlayer) pet.getOwner();
+                    String petName = pet.hasCustomNameTag() ? pet.getCustomNameTag() : "Your pet";
+                    String message = LocalizationHelper.getPetTalkString("death");
+                    PlayerHelper.addChatMessage(player, String.format(message, petName));
                 }
             }
         }
