@@ -17,6 +17,7 @@ import silent.pets.item.MultiItem;
 import silent.pets.item.NamePlate;
 import silent.pets.item.PetSummon;
 import silent.pets.lib.Names;
+import silent.pets.lib.Strings;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
@@ -54,7 +55,7 @@ public class PetsEventHandler {
                 EntityPet pet = (EntityPet) event.entity;
                 if (pet.getOwner() instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) pet.getOwner();
-                    String petName = pet.hasCustomNameTag() ? pet.getCustomNameTag() : "Your pet";
+                    String petName = pet.getPetName();
                     String message = LocalizationHelper.getPetTalkString("death");
                     PlayerHelper.addChatMessage(player, String.format(message, petName));
                 }

@@ -19,12 +19,13 @@ item.silentpets:PetEssenceRaw.desc=Kill some things to get it.
 item.silentpets:PetSummon.name=Pet Summon
 item.silentpets:PetSummon.desc=Makes new friends.
 
-item.silentpets:PetWand.name=Pet Wand (Not Coded)
+item.silentpets:PetWand.name=Pet Wand (WIP)
 item.silentpets:PetWand.desc=Tells your BFFs what to do.
-item.silentpets:PetWand.state.carry=Pet Wand - Carry
-item.silentpets:PetWand.state.follow=Pet Wand - Follow
-item.silentpets:PetWand.state.removeArmor=Pet Wand - Remove Armor
-item.silentpets:PetWand.state.talk=Pet Wand - Talk
+item.silentpets:PetWand.state.armor.name=Pet Wand - Armor
+item.silentpets:PetWand.state.armor.isWearing=%s is wearing %s.
+item.silentpets:PetWand.state.armor.noArmor=%s has no armor!
+item.silentpets:PetWand.state.carry.name=Pet Wand - Carry (NC)
+item.silentpets:PetWand.state.talk.name=Pet Wand - Talk (NC)
 
 
 
@@ -39,6 +40,7 @@ entity.SilentPets.pet.sheep.name=Pet Sheep
 
 # Misc text
 
+misc.silentpets:Pet.NoName=Your pet
 misc.silentpets:PressCtrl=<Press Ctrl>
 misc.silentpets:PressShift=<Press Shift>
 
