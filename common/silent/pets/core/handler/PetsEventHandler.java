@@ -10,6 +10,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import silent.pets.SilentPets;
 import silent.pets.configuration.Config;
 import silent.pets.core.util.LocalizationHelper;
+import silent.pets.core.util.LogHelper;
 import silent.pets.core.util.PlayerHelper;
 import silent.pets.entity.EntityPet;
 import silent.pets.item.ModItems;
@@ -77,11 +78,22 @@ public class PetsEventHandler {
                 && SilentPets.instance.random.nextDouble() <= Config.PET_ESSENCE_DROP_CHANCE.value * (event.lootingLevel / 3.0 + 1.0)) {
             event.drops.add(new EntityItem(world, x, y, z, MultiItem.getStack(Names.PET_ESSENCE_RAW)));
         }
-        // Sometimes drop pet summon when a pet dies.
-        if (event.entity instanceof EntityPet && SilentPets.instance.random.nextDouble() <= Config.PET_ESSENCE_DROP_CHANCE.value) {
-            ItemStack summoner = PetSummon.getStackForPet(event.entity);
-            if (summoner != null) {
-                event.drops.add(new EntityItem(world, x, y, z, summoner));
+        
+        // Pet drops
+        if (event.entity instanceof EntityPet) {
+            EntityPet pet = (EntityPet) event.entity;
+            // Sometimes drop pet summon when a pet dies.
+            if (SilentPets.instance.random.nextDouble() <= Config.PET_ESSENCE_DROP_CHANCE.value) {
+                ItemStack summoner = PetSummon.getStackForPet(pet);
+                if (summoner != null) {
+                    event.drops.add(new EntityItem(world, x, y, z, summoner));
+                }
+            }
+            // Drop equipment
+            ItemStack helmet = pet.getEquipmentInSlot(1);
+            if (helmet != null) {
+                helmet.stackSize = 1;
+                event.drops.add(new EntityItem(world, x, y, z, helmet));
             }
         }
     }

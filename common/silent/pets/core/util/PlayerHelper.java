@@ -1,5 +1,7 @@
 package silent.pets.core.util;
 
+import com.google.common.reflect.Reflection;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +26,10 @@ public class PlayerHelper {
     }
     
     public static void addItemToInventoryOrDrop(EntityPlayer player, ItemStack stack) {
+        
+        if (stack.stackSize < 1) {
+            LogHelper.warning("PlayerHelper.addItemToInventoryOrDrop: stack size is less than 1!");
+        }
         
         if (!player.inventory.addItemStackToInventory(stack)) {
             // Spawn item entity
