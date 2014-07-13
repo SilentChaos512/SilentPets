@@ -50,15 +50,26 @@ public class PetsEventHandler {
     @SubscribeEvent
     public void onLivingDeathEvent(LivingDeathEvent event) {
 
-        if (event.entity.worldObj.isRemote) {
+        //LogHelper.debug(event.source.damageType);
+        if (!event.entity.worldObj.isRemote) {
             if (event.entity instanceof EntityPet) {
                 // Pet death messages.
                 EntityPet pet = (EntityPet) event.entity;
                 if (pet.getOwner() instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) pet.getOwner();
                     String petName = pet.getPetName();
-                    String message = LocalizationHelper.getPetTalkString("death");
-                    PlayerHelper.addChatMessage(player, String.format(message, petName));
+                    String key = "death." + event.source.damageType;
+                    String message = LocalizationHelper.getPetTalkString(key);
+                    // Did we get a message for this damage type?
+                    if (!message.equals(LocalizationHelper.TALK_PREFIX + key + "0")) {
+                        LogHelper.derp();
+                        PlayerHelper.addChatMessage(player, String.format(message, petName));
+                    }
+                    // Otherwise, generic death message
+                    else {
+                        message = LocalizationHelper.getPetTalkString("death");
+                        PlayerHelper.addChatMessage(player, String.format(message, petName) + " (" + event.source.damageType + ")");
+                    }
                 }
             }
         }

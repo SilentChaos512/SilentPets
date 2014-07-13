@@ -53,6 +53,35 @@ talk.silentpets:death1=%s died an embarrassing death.
 talk.silentpets:death2=%s is no more.
 talk.silentpets:death3=%s has died.
 
+talk.silentpets:death.anvil0=%s was squashed by an anvil.
+
+talk.silentpets:death.cactus0=%s sat on a cactus.
+talk.silentpets:death.cactus1=%s was poked by a cactus.
+
+talk.silentpets:death.drown0=%s drowned.
+talk.silentpets:death.drown1=%s stayed under water too long.
+
+talk.silentpets:death.fall0=%s hit the ground too hard.
+
+talk.silentpets:death.indirectMagic0=%s was killed by magic.
+
+talk.silentpets:death.inFire0=%s roasted in a fire.
+
+talk.silentpets:death.inWall0=%s suffocated in a wall.
+talk.silentpets:death.inWall1=%s died in a wall.
+
+talk.silentpets:death.lava0=%s tried to swim in lava.
+talk.silentpets:death.lava1=%s took a lava bath.
+
+talk.silentpets:death.magic0=%s was killed by magic.
+
+talk.silentpets:death.onFire0=%s went up in flames.
+talk.silentpets:death.onFire1=%s burnt to a crisp.
+
+talk.silentpets:death.outOfWorld0=%s fell out of the world.
+
+talk.silentpets:death.wither=%s withered away.
+
 talk.silentpets:following0=I'm with you!
 talk.silentpets:following1=Lead the way!
 talk.silentpets:following2=Can we stop for food?
