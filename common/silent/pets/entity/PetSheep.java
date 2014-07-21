@@ -24,6 +24,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
+import silent.pets.lib.PetStats;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -38,7 +39,6 @@ public class PetSheep extends EntityPet implements IShearable {
 
         super(world);
 
-        attackDamage = 4;
         entityName = "sheep";
 
         this.setFleeceColor(getRandomFleeceColor(this.worldObj.rand));
@@ -57,6 +57,13 @@ public class PetSheep extends EntityPet implements IShearable {
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
+    }
+    
+    @Override
+    protected void applyEntityAttributes() {
+
+        this.stats = PetStats.sheep;
+        super.applyEntityAttributes();
     }
 
     @Override

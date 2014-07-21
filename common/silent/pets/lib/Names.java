@@ -16,6 +16,7 @@ public class Names {
     public final static String PET_ESSENCE_RAW = "PetEssenceRaw";
     public final static String PET_SUMMON = "PetSummon";
     public final static String PET_WAND = "PetWand";
+    public final static String PIG_LEATHER = "PigLeather";
     
     /*
      * Crafting materials

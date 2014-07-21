@@ -11,6 +11,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.oredict.OreDictionary;
 import silent.pets.SilentPets;
 import silent.pets.core.registry.SRegistry;
 import silent.pets.core.util.LocalizationHelper;
@@ -21,7 +22,7 @@ import silent.pets.lib.Strings;
 
 public class MultiItem extends ItemSG {
 
-    public final static String[] names = { Names.PET_ESSENCE_RAW, Names.PET_ESSENCE };
+    public final static String[] names = { Names.PET_ESSENCE_RAW, Names.PET_ESSENCE, Names.PIG_LEATHER };
     
     public MultiItem() {
         
@@ -46,6 +47,13 @@ public class MultiItem extends ItemSG {
     public void addRecipes() {
         
         RecipeHelper.addSurround(getStack(Names.PET_ESSENCE), new ItemStack(Items.gold_ingot), getStack(Names.PET_ESSENCE_RAW));
+    }
+    
+    @Override
+    public void addOreDict() {
+        
+        OreDictionary.registerOre(Strings.ORE_DICT_LEATHER, Items.leather);
+        OreDictionary.registerOre(Strings.ORE_DICT_LEATHER, getStack(Names.PIG_LEATHER));
     }
     
     public static ItemStack getStack(String name) {

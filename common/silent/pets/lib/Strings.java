@@ -31,5 +31,5 @@ public class Strings {
     /*
      * Ore dictionary keys
      */
-    //none
+    public final static String ORE_DICT_LEATHER = "materialLeather";
 }

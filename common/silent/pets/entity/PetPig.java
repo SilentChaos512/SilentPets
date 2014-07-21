@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import silent.pets.lib.PetStats;
 import silent.pets.lib.Strings;
 
 public class PetPig extends EntityPet {
@@ -25,7 +26,6 @@ public class PetPig extends EntityPet {
 
         super(world);
 
-        attackDamage = 6;
         entityName = "pig";
 
         this.setSize(0.9F, 0.9F);
@@ -41,6 +41,13 @@ public class PetPig extends EntityPet {
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
+    }
+    
+    @Override
+    protected void applyEntityAttributes() {
+
+        this.stats = PetStats.pig;
+        super.applyEntityAttributes();
     }
 
     @Override

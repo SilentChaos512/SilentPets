@@ -47,7 +47,7 @@ public class PetWand extends ItemSG {
     @Override
     public void addRecipes() {
         
-        GameRegistry.addShapedRecipe(new ItemStack(this), "p", "g", "g", 'p', MultiItem.getStack(Names.PET_ESSENCE), 'g', Items.gold_ingot);
+        GameRegistry.addShapedRecipe(new ItemStack(this), "lpl", " g ", " g ", 'l', new ItemStack(Items.dye, 1, 4), 'p', MultiItem.getStack(Names.PET_ESSENCE_RAW), 'g', Items.gold_ingot);
     }
     
     @Override

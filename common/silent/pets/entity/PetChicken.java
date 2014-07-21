@@ -1,5 +1,6 @@
 package silent.pets.entity;
 
+import silent.pets.lib.PetStats;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIFollowOwner;
@@ -27,7 +28,6 @@ public class PetChicken extends EntityPet {
 
         super(world);
 
-        attackDamage = 4;
         entityName = "chicken";
 
         this.setSize(0.3F, 0.7F);
@@ -48,9 +48,8 @@ public class PetChicken extends EntityPet {
     @Override
     protected void applyEntityAttributes() {
 
+        this.stats = PetStats.chicken;
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(12.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
     }
 
     @Override

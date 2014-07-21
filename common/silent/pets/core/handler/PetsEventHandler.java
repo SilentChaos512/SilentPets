@@ -1,6 +1,7 @@
 package silent.pets.core.handler;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -82,6 +83,8 @@ public class PetsEventHandler {
         double y = event.entity.posY + 1.0;
         double z = event.entity.posZ;
         World world = event.entity.worldObj;
+        
+        int count;
 
         // Drop Pet Essence sometimes when a player kills something. Looting will increase chance by one third per
         // level.
@@ -105,6 +108,16 @@ public class PetsEventHandler {
             if (helmet != null) {
                 helmet.stackSize = 1;
                 event.drops.add(new EntityItem(world, x, y, z, helmet));
+            }
+        }
+        
+        // Pigs
+        if (event.entity instanceof EntityPig) {
+            // Pig Leather
+            count = SilentPets.instance.random.nextInt(3) + SilentPets.instance.random.nextInt(1 + event.lootingLevel);
+            ItemStack stack = MultiItem.getStack(Names.PIG_LEATHER, count);
+            if (count > 0) {
+                event.drops.add(new EntityItem(world, x, y, z, stack));
             }
         }
     }

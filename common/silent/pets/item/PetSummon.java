@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +13,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import silent.pets.core.registry.SRegistry;
@@ -24,6 +26,7 @@ import silent.pets.entity.PetCow;
 import silent.pets.entity.PetPig;
 import silent.pets.entity.PetSheep;
 import silent.pets.lib.Names;
+import silent.pets.lib.Strings;
 
 public class PetSummon extends ItemSG {
 
@@ -56,16 +59,20 @@ public class PetSummon extends ItemSG {
         }
     }
 
+    public final static int MAX_PETS = 32;
     /**
      * Holds data on all registered pets. The length of the array is arbitrary.
      */
-    public final static PetData[] pets = new PetData[32];
+    public final static PetData[] pets = new PetData[MAX_PETS];
 
     public PetSummon() {
 
         setMaxStackSize(64);
         setCreativeTab(CreativeTabs.tabMisc);
         setUnlocalizedName(Names.PET_SUMMON);
+        setHasSubtypes(true);
+        setMaxDamage(0);
+        icons = new IIcon[MAX_PETS];
     }
 
     @Override
@@ -91,7 +98,7 @@ public class PetSummon extends ItemSG {
         RecipeHelper.addSurround(new ItemStack(this, 1, getIdForPet(PetCow.class)), petEssence, new Object[] { Items.iron_ingot,
                 Items.leather });
         RecipeHelper.addSurround(new ItemStack(this, 1, getIdForPet(PetPig.class)), petEssence, new Object[] { Items.iron_ingot,
-                Items.porkchop });
+                MultiItem.getStack(Names.PIG_LEATHER) });
         RecipeHelper.addSurround(new ItemStack(this, 1, getIdForPet(PetSheep.class)), petEssence, new Object[] { Items.iron_ingot,
                 new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE) });
     }
@@ -185,5 +192,35 @@ public class PetSummon extends ItemSG {
         }
 
         return true;
+    }
+    
+    @Override
+    public void registerIcons(IIconRegister reg) {
+        
+        String s;
+        for (int i = 0; i < pets.length; ++i) {
+            if (pets[i] != null) {
+                s = pets[i].name.substring(4);
+                icons[i] = reg.registerIcon(Strings.RESOURCE_PREFIX + this.itemName + "_" + s);
+            }
+        }
+        itemIcon = reg.registerIcon(Strings.RESOURCE_PREFIX + this.itemName);
+    }
+    
+    @Override
+    public IIcon getIcon(ItemStack stack, int pass) {
+        
+        if (icons[stack.getItemDamage()] != null) {
+            return icons[stack.getItemDamage()];
+        }
+        else {
+            return itemIcon;
+        }
+    }
+    
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        
+        return LocalizationHelper.ITEM_PREFIX + itemName;
     }
 }

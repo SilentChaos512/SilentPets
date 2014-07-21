@@ -10,6 +10,7 @@ import silent.pets.core.proxy.CommonProxy;
 import silent.pets.core.registry.SRegistry;
 import silent.pets.entity.ModEntities;
 import silent.pets.item.ModItems;
+import silent.pets.lib.PetStats;
 import silent.pets.lib.Reference;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -38,6 +39,7 @@ public class SilentPets {
         
         ModBlocks.init();
         ModItems.init();
+        PetStats.init();
         ModEntities.init();
         
         ModItems.initItemRecipes();

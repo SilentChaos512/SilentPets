@@ -20,11 +20,12 @@ import silent.pets.core.util.LogHelper;
 import silent.pets.core.util.PlayerHelper;
 import silent.pets.item.PetWand;
 import silent.pets.lib.Names;
+import silent.pets.lib.PetStats;
 
 public class EntityPet extends EntityTameable {
 
-    protected int attackDamage = 4;
     protected String entityName = "null";
+    public PetStats stats = PetStats.generic;
 
     protected int timerHealthRegen = Config.PET_REGEN_DELAY.value;
 
@@ -37,14 +38,14 @@ public class EntityPet extends EntityTameable {
     protected void applyEntityAttributes() {
 
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.stats.health);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(this.stats.speed);
     }
 
     @Override
     public boolean attackEntityAsMob(Entity entity) {
 
-        return entity.attackEntityFrom(DamageSource.causeMobDamage(this), this.attackDamage);
+        return entity.attackEntityFrom(DamageSource.causeMobDamage(this), stats.damage);
     }
 
     @Override

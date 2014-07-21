@@ -27,6 +27,9 @@ item.silentpets:PetWand.state.armor.noArmor=%s has no armor!
 item.silentpets:PetWand.state.carry.name=Pet Wand - Carry (NC)
 item.silentpets:PetWand.state.talk.name=Pet Wand - Talk (NC)
 
+item.silentpets:PigLeather.name=Pig Leather
+item.silentpets:PigLeather.desc=Somehow not as good as cow leather.
+
 
 
 # Entity localization
