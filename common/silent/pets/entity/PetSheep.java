@@ -24,6 +24,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
+import silent.pets.core.util.InventoryHelper;
 import silent.pets.lib.PetStats;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -144,8 +145,8 @@ public class PetSheep extends EntityPet implements IShearable {
         ItemStack stack = player.inventory.getCurrentItem();
         
         if (stack != null) {
-            if (stack.getItem() == Items.dye) {
-                int i = BlockColored.func_150032_b(stack.getItemDamage());
+            if (InventoryHelper.isDye(stack)) {
+                int i = BlockColored.func_150032_b(InventoryHelper.getDyeMetaFromOreDict(stack));
                 
                 if (!this.getSheared() && this.getFleeceColor() != i) {
                     this.setFleeceColor(i);

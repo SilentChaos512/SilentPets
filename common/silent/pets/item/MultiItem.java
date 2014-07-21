@@ -14,6 +14,7 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 import silent.pets.SilentPets;
 import silent.pets.core.registry.SRegistry;
+import silent.pets.core.util.InventoryHelper;
 import silent.pets.core.util.LocalizationHelper;
 import silent.pets.core.util.RecipeHelper;
 import silent.pets.lib.Names;
@@ -52,7 +53,9 @@ public class MultiItem extends ItemSG {
     @Override
     public void addOreDict() {
         
-        OreDictionary.registerOre(Strings.ORE_DICT_LEATHER, Items.leather);
+        if (!InventoryHelper.oreDictContainsKey(Strings.ORE_DICT_LEATHER)) {
+            OreDictionary.registerOre(Strings.ORE_DICT_LEATHER, Items.leather);
+        }
         OreDictionary.registerOre(Strings.ORE_DICT_LEATHER, getStack(Names.PIG_LEATHER));
     }
     
