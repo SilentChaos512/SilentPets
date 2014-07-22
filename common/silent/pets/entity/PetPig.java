@@ -27,6 +27,8 @@ public class PetPig extends EntityPet {
         super(world);
 
         entityName = "pig";
+        this.stats = PetStats.chicken;
+        this.applyPetStats();
 
         this.setSize(0.9F, 0.9F);
         this.getNavigator().setAvoidsWater(true);

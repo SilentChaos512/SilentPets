@@ -36,6 +36,7 @@ item.silentpets:PigLeather.desc=Somehow not as good as cow leather.
 
 entity.SilentPets.pet.chicken.name=Pet Chicken
 entity.SilentPets.pet.cow.name=Pet Cow
+entity.SilentPets.pet.mooshroom.name=Pet Mooshroom
 entity.SilentPets.pet.pig.name=Pet Pig
 entity.SilentPets.pet.sheep.name=Pet Sheep
 

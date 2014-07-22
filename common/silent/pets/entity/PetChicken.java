@@ -29,6 +29,8 @@ public class PetChicken extends EntityPet {
         super(world);
 
         entityName = "chicken";
+        this.stats = PetStats.chicken;
+        this.applyPetStats();
 
         this.setSize(0.3F, 0.7F);
         this.getNavigator().setAvoidsWater(true);
@@ -48,7 +50,6 @@ public class PetChicken extends EntityPet {
     @Override
     protected void applyEntityAttributes() {
 
-        this.stats = PetStats.chicken;
         super.applyEntityAttributes();
     }
 

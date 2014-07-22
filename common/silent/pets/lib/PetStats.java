@@ -6,6 +6,7 @@ public class PetStats {
 
     public final static PetStats chicken = new PetStats(16.0, BASE_SPEED * 1.2, 3.0f);
     public final static PetStats cow = new PetStats(24.0, BASE_SPEED, 5.0f);
+    public final static PetStats mooshroom = new PetStats(24.0, BASE_SPEED, 5.0f);
     public final static PetStats pig = new PetStats(20.0, BASE_SPEED, 6.0f);
     public final static PetStats sheep = new PetStats(20.0, BASE_SPEED, 5.0f);
 

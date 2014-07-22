@@ -208,17 +208,6 @@ public class PetSummon extends ItemSG {
     }
     
     @Override
-    public IIcon getIcon(ItemStack stack, int pass) {
-        
-        if (icons[stack.getItemDamage()] != null) {
-            return icons[stack.getItemDamage()];
-        }
-        else {
-            return itemIcon;
-        }
-    }
-    
-    @Override
     public String getUnlocalizedName(ItemStack stack) {
         
         return LocalizationHelper.ITEM_PREFIX + itemName;

@@ -16,6 +16,7 @@ public class ModEntities {
         registerEntity(PetSheep.class, s + "sheep", ++k);
         registerEntity(PetChicken.class, s + "chicken", ++k);
         registerEntity(PetPig.class, s + "pig", ++k);
+        registerEntity(PetMooshroom.class, s + "mooshroom", ++k);
     }
     
     private static void registerEntity(Class<? extends EntityPet> entity, String name, int id) {

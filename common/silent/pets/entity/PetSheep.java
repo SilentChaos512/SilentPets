@@ -41,6 +41,8 @@ public class PetSheep extends EntityPet implements IShearable {
         super(world);
 
         entityName = "sheep";
+        this.stats = PetStats.chicken;
+        this.applyPetStats();
 
         this.setFleeceColor(getRandomFleeceColor(this.worldObj.rand));
 

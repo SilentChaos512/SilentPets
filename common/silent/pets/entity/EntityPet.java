@@ -33,11 +33,9 @@ public class EntityPet extends EntityTameable {
 
         super(world);
     }
-
-    @Override
-    protected void applyEntityAttributes() {
-
-        super.applyEntityAttributes();
+    
+    protected void applyPetStats() {
+        
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.stats.health);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(this.stats.speed);
     }
