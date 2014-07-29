@@ -147,8 +147,7 @@ public class EntityPet extends EntityTameable {
                 }
             }
 
-            if (player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()) && !this.worldObj.isRemote
-                    && !this.isBreedingItem(stack)) {
+            if (this.func_152114_e(player) && !this.worldObj.isRemote && !this.isBreedingItem(stack)) {
                 this.aiSit.setSitting(!this.isSitting());
                 if (this.isSitting()) {
                     PlayerHelper.addChatMessage(player, LocalizationHelper.getPetTalk(this, "following"));
