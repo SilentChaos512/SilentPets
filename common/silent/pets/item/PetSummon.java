@@ -23,10 +23,13 @@ import silent.pets.core.util.RecipeHelper;
 import silent.pets.entity.EntityPet;
 import silent.pets.entity.PetChicken;
 import silent.pets.entity.PetCow;
+import silent.pets.entity.PetDog;
+import silent.pets.entity.PetMooshroom;
 import silent.pets.entity.PetPig;
 import silent.pets.entity.PetSheep;
 import silent.pets.lib.Names;
 import silent.pets.lib.Strings;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class PetSummon extends ItemSG {
 
@@ -86,21 +89,50 @@ public class PetSummon extends ItemSG {
     public static void addPet(Class<? extends EntityPet> pet, String name, int id) {
 
         pets[id] = new PetData(pet, name, id);
-        // LogHelper.list(pet, name, id);
     }
 
     @Override
     public void addRecipes() {
 
         ItemStack petEssence = MultiItem.getStack(Names.PET_ESSENCE);
-        RecipeHelper.addSurround(new ItemStack(this, 1, getIdForPet(PetChicken.class)), petEssence, new Object[] { Items.iron_ingot,
-                Items.feather });
-        RecipeHelper.addSurround(new ItemStack(this, 1, getIdForPet(PetCow.class)), petEssence, new Object[] { Items.iron_ingot,
-                Items.leather });
-        RecipeHelper.addSurround(new ItemStack(this, 1, getIdForPet(PetPig.class)), petEssence, new Object[] { Items.iron_ingot,
-                MultiItem.getStack(Names.PIG_LEATHER) });
-        RecipeHelper.addSurround(new ItemStack(this, 1, getIdForPet(PetSheep.class)), petEssence, new Object[] { Items.iron_ingot,
-                new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE) });
+        // Chicken
+        addRecipe(PetChicken.class, new Object[] { Items.feather });
+        // Cow
+        addRecipe(PetCow.class, new Object[] { Items.leather });
+        // Dog
+        addRecipe(PetDog.class, new Object[] { Items.bone, Items.bone, Items.porkchop });
+        // Mooshroom
+        addRecipe(PetMooshroom.class, new Object[] { Blocks.red_mushroom, Blocks.red_mushroom, Items.leather });
+        // Pig
+        addRecipe(PetPig.class, new Object[] { MultiItem.getStack(Names.PIG_LEATHER) });
+        // Sheep
+        addRecipe(PetSheep.class, new Object[] { new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE) });
+    }
+
+    private void addRecipe(Class<? extends EntityPet> pet, Object[] obj) {
+
+        // Derp catcher
+        if (obj.length == 0) {
+            LogHelper.derp("PetSummon.addRecipe: obj array length is 0!");
+            return;
+        }
+        
+        ItemStack petEssence = MultiItem.getStack(Names.PET_ESSENCE);
+        ItemStack summon = new ItemStack(this, 1, getIdForPet(pet));
+        Object[] o = new Object[4];
+
+        // Copy the object array, expanding it to four items, duplicating the last if necessary.
+        for (int i = 0; i < 4; ++i) {
+            if (i < obj.length) {
+                o[i] = obj[i];
+            }
+            else {
+                o[i] = obj[obj.length - 1];
+            }
+        }
+
+        GameRegistry.addShapedRecipe(summon, "aib", "ipi", "cid", 'i', Items.iron_ingot, 'p', petEssence, 'a', o[0], 'b', o[1], 'c', o[2],
+                'd', o[3]);
     }
 
     public static int getIdForPet(Class<? extends EntityPet> pet) {
@@ -123,15 +155,15 @@ public class PetSummon extends ItemSG {
             return null;
         }
     }
-    
+
     public static ItemStack getStackForPet(Entity pet) {
-        
+
         for (int i = 0; i < pets.length; ++i) {
             if (pets[i] != null && pets[i].clazz == pet.getClass()) {
                 return new ItemStack(SRegistry.getItem(Names.PET_SUMMON), 1, i);
             }
         }
-        
+
         return null;
     }
 
@@ -193,10 +225,10 @@ public class PetSummon extends ItemSG {
 
         return true;
     }
-    
+
     @Override
     public void registerIcons(IIconRegister reg) {
-        
+
         String s;
         for (int i = 0; i < pets.length; ++i) {
             if (pets[i] != null) {
@@ -206,10 +238,10 @@ public class PetSummon extends ItemSG {
         }
         itemIcon = reg.registerIcon(Strings.RESOURCE_PREFIX + this.itemName);
     }
-    
+
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        
+
         return LocalizationHelper.ITEM_PREFIX + itemName;
     }
 }

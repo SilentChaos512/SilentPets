@@ -5,7 +5,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemArmor;
@@ -24,6 +28,8 @@ import silent.pets.lib.PetStats;
 
 public class EntityPet extends EntityTameable {
 
+    public final static int DATA_BEG = 30;
+
     protected String entityName = "null";
     public PetStats stats = PetStats.generic;
 
@@ -33,9 +39,9 @@ public class EntityPet extends EntityTameable {
 
         super(world);
     }
-    
+
     protected void applyPetStats() {
-        
+
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.stats.health);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(this.stats.speed);
     }
@@ -73,6 +79,16 @@ public class EntityPet extends EntityTameable {
 
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public void func_70918_i(boolean value) {
+
+        if (value) {
+            this.dataWatcher.updateObject(DATA_BEG, Byte.valueOf((byte) 1));
+        }
+        else {
+            this.dataWatcher.updateObject(DATA_BEG, Byte.valueOf((byte) 0));
+        }
     }
 
     @Override
@@ -141,6 +157,13 @@ public class EntityPet extends EntityTameable {
                     ItemArmor armor = (ItemArmor) stack.getItem();
                     if (armor.armorType == 0) {
                         this.setCurrentItemOrArmor(1, stack);
+                        // Display newly equipped armor!
+                        if (this.worldObj.isRemote) {
+                            String armorName = StatCollector.translateToLocal(stack.getItem().getUnlocalizedName(stack) + ".name");
+                            String s = LocalizationHelper.getOtherItemKey(Names.PET_WAND, "state.armor.isWearing");
+                            s = String.format(s, this.getPetName(), armorName);
+                            PlayerHelper.addChatMessage(player, s);
+                        }
                         --stack.stackSize;
                         return true;
                     }
@@ -239,6 +262,27 @@ public class EntityPet extends EntityTameable {
         }
         else {
             return LocalizationHelper.getMiscText("Pet.NoName");
+        }
+    }
+    
+    @Override
+    public boolean func_142018_a(EntityLivingBase target, EntityLivingBase owner) {
+
+        if (!(target instanceof EntityCreeper) && !(target instanceof EntityGhast)) {
+            if (target instanceof EntityTameable) {
+                EntityTameable entityTameable = (EntityTameable) target;
+
+                if (entityTameable.isTamed() && entityTameable.getOwner() == owner) {
+                    return false;
+                }
+            }
+
+            return target instanceof EntityPlayer && owner instanceof EntityPlayer
+                    && !((EntityPlayer) owner).canAttackPlayer((EntityPlayer) target) ? false
+                    : !(target instanceof EntityHorse) || !((EntityHorse) target).isTame();
+        }
+        else {
+            return false;
         }
     }
 }
