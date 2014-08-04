@@ -2,6 +2,7 @@ package silent.pets.item;
 
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
@@ -48,6 +49,7 @@ public class MultiItem extends ItemSG {
     public void addRecipes() {
         
         RecipeHelper.addSurround(getStack(Names.PET_ESSENCE), new ItemStack(Items.gold_ingot), getStack(Names.PET_ESSENCE_RAW));
+        GameRegistry.addSmelting(getStack(Names.PIG_LEATHER), new ItemStack(Items.leather), 0.2f);
     }
     
     @Override
