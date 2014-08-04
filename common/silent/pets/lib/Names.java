@@ -10,6 +10,7 @@ public class Names {
 	/*
 	 * Items
 	 */
+    public final static String MOSSY_ESSENCE = "MossyEssence";
     public final static String MULTI_ITEM = "MultiItem";
     public final static String NAME_PLATE = "NamePlate";
     public final static String PET_ESSENCE = "PetEssence";

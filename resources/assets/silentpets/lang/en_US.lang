@@ -7,6 +7,9 @@ tile.silentpets:example.desc=Example description
 
 # Item localizations
 
+item.silentpets:MossyEssence.name=Mossy Essence
+item.silentpets:MossyEssence.desc=Yuck.
+
 item.silentpets:NamePlate.name=Name Plate
 item.silentpets:NamePlate.desc=Can name items or entities.
 
