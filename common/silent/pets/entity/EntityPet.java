@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.StatCollector;
@@ -311,5 +312,19 @@ public class EntityPet extends EntityTameable {
         else {
             return false;
         }
+    }
+    
+    @Override
+    public void readEntityFromNBT(NBTTagCompound tags) {
+
+        super.readEntityFromNBT(tags);
+        this.setAllowTalk(tags.getBoolean("TalkAllowed"));
+    }
+    
+    @Override
+    public void writeEntityToNBT(NBTTagCompound tags) {
+        
+        super.writeEntityToNBT(tags);
+        tags.setBoolean("TalkAllowed", this.getAllowTalk());
     }
 }
