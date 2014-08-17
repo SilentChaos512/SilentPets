@@ -21,6 +21,7 @@ import silent.pets.core.util.LocalizationHelper;
 import silent.pets.core.util.LogHelper;
 import silent.pets.core.util.RecipeHelper;
 import silent.pets.entity.EntityPet;
+import silent.pets.entity.PetCat;
 import silent.pets.entity.PetChicken;
 import silent.pets.entity.PetCow;
 import silent.pets.entity.PetDog;
@@ -95,6 +96,8 @@ public class PetSummon extends ItemSG {
     public void addRecipes() {
 
         ItemStack petEssence = MultiItem.getStack(Names.PET_ESSENCE);
+        // Cat
+        addRecipe(PetCat.class, new Object[] { Items.fish, Items.fish, Items.string });
         // Chicken
         addRecipe(PetChicken.class, new Object[] { Items.feather });
         // Cow
