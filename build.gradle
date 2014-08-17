@@ -29,5 +29,5 @@ resources { srcDirs = ["$projectDir/resources"] }
 }
 
 archivesBaseName = "SilentPets"
-version = "1.7.10-0.1.02-alpha"
+version = "1.7.10-0.1.03-alpha"
 minecraft.version = "1.7.10-10.13.0.1180"

@@ -9,7 +9,6 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemArmor;
@@ -29,6 +28,7 @@ import silent.pets.lib.PetStats;
 public class EntityPet extends EntityTameable {
 
     public final static int DATA_BEG = 30;
+    public final static int DATA_TALK = 31;
 
     protected String entityName = "null";
     public PetStats stats = PetStats.generic;
@@ -81,6 +81,13 @@ public class EntityPet extends EntityTameable {
         return null;
     }
 
+    @Override
+    protected void entityInit() {
+
+        super.entityInit();
+        this.dataWatcher.addObject(DATA_TALK, Byte.valueOf((byte) 1));
+    }
+
     public void func_70918_i(boolean value) {
 
         if (value) {
@@ -118,7 +125,17 @@ public class EntityPet extends EntityTameable {
     @Override
     protected float getSoundVolume() {
 
-        return 0.4f;
+        return this.dataWatcher.getWatchableObjectByte(DATA_TALK) == 0 ? 0.0f : 0.4f;
+    }
+
+    public boolean getAllowTalk() {
+
+        return this.dataWatcher.getWatchableObjectByte(DATA_TALK) != 0;
+    }
+
+    public void setAllowTalk(boolean talkAllowed) {
+
+        this.dataWatcher.updateObject(DATA_TALK, Byte.valueOf((byte) (talkAllowed ? 1 : 0)));
     }
 
     @Override
@@ -221,7 +238,17 @@ public class EntityPet extends EntityTameable {
             // TODO
         }
         else if (state == PetWand.State.TALK) {
-            // TODO
+            // Toggle talk mode.
+            if (!player.worldObj.isRemote) {
+                boolean allowed = !this.getAllowTalk();
+                this.setAllowTalk(allowed);
+                if (allowed) {
+                    PlayerHelper.addChatMessage(player, LocalizationHelper.getPetTalk(this, "talk.on"));
+                }
+                else {
+                    PlayerHelper.addChatMessage(player, LocalizationHelper.getPetTalk(this, "talk.off"));
+                }
+            }
         }
         else if (state == PetWand.State.NONE) {
             // Do nothing.
@@ -264,7 +291,7 @@ public class EntityPet extends EntityTameable {
             return LocalizationHelper.getMiscText("Pet.NoName");
         }
     }
-    
+
     @Override
     public boolean func_142018_a(EntityLivingBase target, EntityLivingBase owner) {
 
@@ -278,8 +305,8 @@ public class EntityPet extends EntityTameable {
             }
 
             return target instanceof EntityPlayer && owner instanceof EntityPlayer
-                    && !((EntityPlayer) owner).canAttackPlayer((EntityPlayer) target) ? false
-                    : !(target instanceof EntityHorse) || !((EntityHorse) target).isTame();
+                    && !((EntityPlayer) owner).canAttackPlayer((EntityPlayer) target) ? false : !(target instanceof EntityHorse)
+                    || !((EntityHorse) target).isTame();
         }
         else {
             return false;

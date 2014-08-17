@@ -98,3 +98,13 @@ talk.silentpets:following2=Can we stop for food?
 talk.silentpets:sitting0=OK, I'll stay here.
 talk.silentpets:sitting1=Taking it easy!
 talk.silentpets:sitting2=Staying where I am.
+
+talk.silentpets:talk.off0=I'll be quiet.
+talk.silentpets:talk.off1=Not making noise.
+talk.silentpets:talk.off2=Shutting my mouth.
+
+talk.silentpets:talk.on0=Party time!
+talk.silentpets:talk.on1=Time to chat!
+talk.silentpets:talk.on2=Making lots of noise!
+
+
