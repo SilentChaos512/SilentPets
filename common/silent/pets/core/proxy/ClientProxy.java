@@ -2,15 +2,18 @@ package silent.pets.core.proxy;
 
 import net.minecraft.client.model.ModelChicken;
 import net.minecraft.client.model.ModelPig;
+import silent.pets.client.model.ModelPetCat;
 import silent.pets.client.model.ModelPetDog;
 import silent.pets.client.model.ModelPetSheep1;
 import silent.pets.client.model.ModelPetSheep2;
+import silent.pets.client.renderer.entity.RenderPetCat;
 import silent.pets.client.renderer.entity.RenderPetChicken;
 import silent.pets.client.renderer.entity.RenderPetCow;
 import silent.pets.client.renderer.entity.RenderPetDog;
 import silent.pets.client.renderer.entity.RenderPetMooshroom;
 import silent.pets.client.renderer.entity.RenderPetPig;
 import silent.pets.client.renderer.entity.RenderPetSheep;
+import silent.pets.entity.PetCat;
 import silent.pets.entity.PetChicken;
 import silent.pets.entity.PetCow;
 import silent.pets.entity.PetDog;
@@ -37,6 +40,7 @@ public class ClientProxy extends CommonProxy {
 
 	private void registerRenderersMobs() {
 
+	    RenderingRegistry.registerEntityRenderingHandler(PetCat.class, new RenderPetCat(new ModelPetCat()));
 	    RenderingRegistry.registerEntityRenderingHandler(PetChicken.class, new RenderPetChicken(new ModelChicken()));
 	    RenderingRegistry.registerEntityRenderingHandler(PetCow.class, new RenderPetCow());
 	    RenderingRegistry.registerEntityRenderingHandler(PetDog.class, new RenderPetDog(new ModelPetDog(), new ModelPetDog()));

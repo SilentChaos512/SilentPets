@@ -161,7 +161,7 @@ public class EntityPet extends EntityTameable {
                         if (this.worldObj.isRemote) {
                             String armorName = StatCollector.translateToLocal(stack.getItem().getUnlocalizedName(stack) + ".name");
                             String s = LocalizationHelper.getOtherItemKey(Names.PET_WAND, "state.armor.isWearing");
-                            s = String.format(s, this.getPetName(), armorName);
+                            s = String.format(s, this.getPetName(), armorName, this.getTotalArmorValue());
                             PlayerHelper.addChatMessage(player, s);
                         }
                         --stack.stackSize;
@@ -207,7 +207,7 @@ public class EntityPet extends EntityTameable {
                 if (helmet != null) {
                     String armorName = StatCollector.translateToLocal(helmet.getItem().getUnlocalizedName(helmet) + ".name");
                     String s = LocalizationHelper.getOtherItemKey(Names.PET_WAND, "state.armor.isWearing");
-                    s = String.format(s, this.getPetName(), armorName);
+                    s = String.format(s, this.getPetName(), armorName, this.getTotalArmorValue());
                     PlayerHelper.addChatMessage(player, s);
                 }
                 else {

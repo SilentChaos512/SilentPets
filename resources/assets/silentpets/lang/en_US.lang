@@ -25,7 +25,7 @@ item.silentpets:PetSummon.desc=Makes new friends.
 item.silentpets:PetWand.name=Pet Wand (WIP)
 item.silentpets:PetWand.desc=Tells your BFFs what to do.
 item.silentpets:PetWand.state.armor.name=Pet Wand - Armor
-item.silentpets:PetWand.state.armor.isWearing=%s is wearing %s.
+item.silentpets:PetWand.state.armor.isWearing=%s is wearing %s (%s protection).
 item.silentpets:PetWand.state.armor.noArmor=%s has no armor!
 item.silentpets:PetWand.state.carry.name=Pet Wand - Carry (NC)
 item.silentpets:PetWand.state.talk.name=Pet Wand - Talk (NC)
@@ -37,6 +37,7 @@ item.silentpets:PigLeather.desc=Somehow not as good as cow leather.
 
 # Entity localization
 
+entity.SilentPets.pet.cat.name=Pet Cat
 entity.SilentPets.pet.chicken.name=Pet Chicken
 entity.SilentPets.pet.cow.name=Pet Cow
 entity.SilentPets.pet.dog.name=Pet Dog
