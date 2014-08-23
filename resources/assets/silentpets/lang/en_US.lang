@@ -1,3 +1,7 @@
+# Creative tabs
+
+itemGroup.tabSilentPets=Silent's Pets
+
 # Block localizations
 
 tile.silentpets:example.name=Example
@@ -28,7 +32,7 @@ item.silentpets:PetWand.state.armor.name=Pet Wand - Armor
 item.silentpets:PetWand.state.armor.isWearing=%s is wearing %s (%s protection).
 item.silentpets:PetWand.state.armor.noArmor=%s has no armor!
 item.silentpets:PetWand.state.carry.name=Pet Wand - Carry (NC)
-item.silentpets:PetWand.state.talk.name=Pet Wand - Talk (NC)
+item.silentpets:PetWand.state.talk.name=Pet Wand - Talk
 
 item.silentpets:PigLeather.name=Pig Leather
 item.silentpets:PigLeather.desc=Somehow not as good as cow leather.

@@ -29,7 +29,6 @@ public class PetWand extends ItemSG {
     public PetWand() {
         
         setMaxStackSize(1);
-        setCreativeTab(CreativeTabs.tabTools);
         setUnlocalizedName(Names.PET_WAND);
         icons = new IIcon[State.values().length];
     }

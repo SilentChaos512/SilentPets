@@ -11,12 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import silent.pets.SilentPets;
 import silent.pets.core.registry.IAddRecipe;
 import silent.pets.core.registry.IAddThaumcraftStuff;
 import silent.pets.core.util.LocalizationHelper;
 import silent.pets.lib.Strings;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemSG extends Item implements IAddRecipe, IAddThaumcraftStuff {
 
@@ -27,6 +26,7 @@ public class ItemSG extends Item implements IAddRecipe, IAddThaumcraftStuff {
 
     public ItemSG() {
 
+        setCreativeTab(SilentPets.tabSilentPets);
     }
 
     @Override

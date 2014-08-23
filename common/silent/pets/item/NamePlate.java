@@ -18,7 +18,6 @@ public class NamePlate extends ItemSG {
 
         setMaxStackSize(1);
         setMaxDamage(MAX_DAMAGE);
-        setCreativeTab(CreativeTabs.tabMisc);
         setUnlocalizedName(Names.NAME_PLATE);
     }
 

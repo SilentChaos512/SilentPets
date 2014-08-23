@@ -31,7 +31,6 @@ public class MultiItem extends ItemSG {
         setMaxStackSize(64);
         setHasSubtypes(true);
         setMaxDamage(0);
-        setCreativeTab(CreativeTabs.tabMaterials);
         setUnlocalizedName(Names.MULTI_ITEM);
     }
 

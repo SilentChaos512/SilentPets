@@ -2,6 +2,8 @@ package silent.pets;
 
 import java.util.Random;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import silent.pets.block.ModBlocks;
 import silent.pets.configuration.Config;
@@ -10,6 +12,7 @@ import silent.pets.core.proxy.CommonProxy;
 import silent.pets.core.registry.SRegistry;
 import silent.pets.entity.ModEntities;
 import silent.pets.item.ModItems;
+import silent.pets.lib.Names;
 import silent.pets.lib.PetStats;
 import silent.pets.lib.Reference;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -69,4 +72,12 @@ public class SilentPets {
         // Is this the right place for this?
         SRegistry.addThaumcraftStuff();
     }
+    
+    public static CreativeTabs tabSilentPets = new CreativeTabs("tabSilentPets") {
+        
+        @Override
+        public Item getTabIconItem() {
+            return SRegistry.getItem(Names.MULTI_ITEM);
+        }
+    };
 }
