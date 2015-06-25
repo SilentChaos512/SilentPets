@@ -28,303 +28,295 @@ import net.silentchaos512.pets.lib.PetStats;
 
 public class EntityPet extends EntityTameable {
 
-    public final static int DATA_BEG = 30;
-    public final static int DATA_TALK = 31;
+  public final static int DATA_BEG = 30;
+  public final static int DATA_TALK = 31;
 
-    protected String entityName = "null";
-    public PetStats stats = PetStats.generic;
+  protected String entityName = "null";
+  public PetStats stats = PetStats.generic;
 
-    protected int timerHealthRegen = Config.PET_REGEN_DELAY.value;
+  protected int timerHealthRegen = Config.PET_REGEN_DELAY;
 
-    public EntityPet(World world) {
+  public EntityPet(World world) {
 
-        super(world);
+    super(world);
+  }
+
+  protected void applyPetStats() {
+
+    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.stats.health);
+    this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(this.stats.speed);
+  }
+
+  @Override
+  public boolean attackEntityAsMob(Entity entity) {
+
+    return entity.attackEntityFrom(DamageSource.causeMobDamage(this), stats.damage);
+  }
+
+  @Override
+  public boolean attackEntityFrom(DamageSource source, float amount) {
+
+    if (this.isEntityInvulnerable()) {
+      return false;
+    } else {
+      // reset regen timer
+      timerHealthRegen = Config.PET_REGEN_DELAY;
+
+      // stop sitting
+      Entity entity = source.getEntity();
+      this.aiSit.setSitting(false);
+
+      if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow)) {
+        amount = (amount + 1.0f) / 2.0f;
+      }
+
+      return super.attackEntityFrom(source, amount);
     }
+  }
 
-    protected void applyPetStats() {
+  @Override
+  public EntityAgeable createChild(EntityAgeable var1) {
 
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.stats.health);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(this.stats.speed);
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  protected void entityInit() {
+
+    super.entityInit();
+    this.dataWatcher.addObject(DATA_TALK, Byte.valueOf((byte) 1));
+  }
+
+  public void func_70918_i(boolean value) {
+
+    if (value) {
+      this.dataWatcher.updateObject(DATA_BEG, Byte.valueOf((byte) 1));
+    } else {
+      this.dataWatcher.updateObject(DATA_BEG, Byte.valueOf((byte) 0));
     }
+  }
 
-    @Override
-    public boolean attackEntityAsMob(Entity entity) {
+  @Override
+  protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_) {
 
-        return entity.attackEntityFrom(DamageSource.causeMobDamage(this), stats.damage);
+    this.playSound("mob." + entityName + ".step", 0.15F, 1.0F);
+  }
+
+  @Override
+  protected String getDeathSound() {
+
+    return "mob." + entityName + ".hurt";
+  }
+
+  @Override
+  protected String getHurtSound() {
+
+    return "mob." + entityName + ".hurt";
+  }
+
+  @Override
+  protected String getLivingSound() {
+
+    return "mob." + entityName + ".say";
+  }
+
+  @Override
+  protected float getSoundVolume() {
+
+    return this.dataWatcher.getWatchableObjectByte(DATA_TALK) == 0 ? 0.0f : 0.4f;
+  }
+
+  public boolean getAllowTalk() {
+
+    return this.dataWatcher.getWatchableObjectByte(DATA_TALK) != 0;
+  }
+
+  public void setAllowTalk(boolean talkAllowed) {
+
+    this.dataWatcher.updateObject(DATA_TALK, Byte.valueOf((byte) (talkAllowed ? 1 : 0)));
+  }
+
+  @Override
+  public int getTotalArmorValue() {
+
+    ItemStack stack = this.getEquipmentInSlot(1);
+    if (stack != null) {
+      ItemArmor helmet = (ItemArmor) stack.getItem();
+      int k = 0;
+      for (int i = 0; i < 4; ++i) {
+        k += helmet.getArmorMaterial().getDamageReductionAmount(i);
+      }
+      return k;
+    } else {
+      return 0;
     }
+  }
 
-    @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+  @Override
+  public boolean interact(EntityPlayer player) {
 
-        if (this.isEntityInvulnerable()) {
-            return false;
+    ItemStack stack = player.inventory.getCurrentItem();
+
+    if (this.isTamed()) {
+      if (stack != null) {
+        // Pet wand?
+        if (stack.getItem() instanceof PetWand) {
+          handlePetWand(player, stack);
+          return true;
         }
-        else {
-            // reset regen timer
-            timerHealthRegen = Config.PET_REGEN_DELAY.value;
-
-            // stop sitting
-            Entity entity = source.getEntity();
-            this.aiSit.setSitting(false);
-
-            if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow)) {
-                amount = (amount + 1.0f) / 2.0f;
+        // Heal with food?
+        // Dye?
+        // Armor?
+        if (stack.getItem() instanceof ItemArmor && this.getEquipmentInSlot(1) == null) {
+          ItemArmor armor = (ItemArmor) stack.getItem();
+          if (armor.armorType == 0) {
+            this.setCurrentItemOrArmor(1, stack);
+            // Display newly equipped armor!
+            if (this.worldObj.isRemote) {
+              String armorName = StatCollector.translateToLocal(stack.getItem().getUnlocalizedName(
+                  stack)
+                  + ".name");
+              String s = LocalizationHelper
+                  .getOtherItemKey(Names.PET_WAND, "state.armor.isWearing");
+              s = String.format(s, this.getPetName(), armorName, this.getTotalArmorValue());
+              PlayerHelper.addChatMessage(player, s);
             }
-
-            return super.attackEntityFrom(source, amount);
+            --stack.stackSize;
+            return true;
+          }
         }
-    }
+      }
 
-    @Override
-    public EntityAgeable createChild(EntityAgeable var1) {
-
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    protected void entityInit() {
-
-        super.entityInit();
-        this.dataWatcher.addObject(DATA_TALK, Byte.valueOf((byte) 1));
-    }
-
-    public void func_70918_i(boolean value) {
-
-        if (value) {
-            this.dataWatcher.updateObject(DATA_BEG, Byte.valueOf((byte) 1));
+      if (this.func_152114_e(player) && !this.worldObj.isRemote && !this.isBreedingItem(stack)) {
+        this.aiSit.setSitting(!this.isSitting());
+        if (this.isSitting()) {
+          PlayerHelper.addChatMessage(player, LocalizationHelper.getPetTalk(this, "following"));
+        } else {
+          PlayerHelper.addChatMessage(player, LocalizationHelper.getPetTalk(this, "sitting"));
         }
-        else {
-            this.dataWatcher.updateObject(DATA_BEG, Byte.valueOf((byte) 0));
+        this.isJumping = false;
+        this.setPathToEntity((PathEntity) null);
+        this.setTarget((Entity) null);
+        this.setAttackTarget((EntityLivingBase) null);
+      }
+    }
+
+    return super.interact(player);
+  }
+
+  private void handlePetWand(EntityPlayer player, ItemStack stack) {
+
+    PetWand.State state = PetWand.getState(stack);
+
+    if (state == PetWand.State.ARMOR) {
+      ItemStack helmet = this.getEquipmentInSlot(1);
+      if (!player.worldObj.isRemote && player.isSneaking()) {
+        // Remove armor
+        if (helmet != null) {
+          helmet.stackSize = 1;
+          PlayerHelper.addItemToInventoryOrDrop(player, helmet);
+          this.setCurrentItemOrArmor(1, (ItemStack) null);
         }
-    }
-
-    @Override
-    protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_) {
-
-        this.playSound("mob." + entityName + ".step", 0.15F, 1.0F);
-    }
-
-    @Override
-    protected String getDeathSound() {
-
-        return "mob." + entityName + ".hurt";
-    }
-
-    @Override
-    protected String getHurtSound() {
-
-        return "mob." + entityName + ".hurt";
-    }
-
-    @Override
-    protected String getLivingSound() {
-
-        return "mob." + entityName + ".say";
-    }
-
-    @Override
-    protected float getSoundVolume() {
-
-        return this.dataWatcher.getWatchableObjectByte(DATA_TALK) == 0 ? 0.0f : 0.4f;
-    }
-
-    public boolean getAllowTalk() {
-
-        return this.dataWatcher.getWatchableObjectByte(DATA_TALK) != 0;
-    }
-
-    public void setAllowTalk(boolean talkAllowed) {
-
-        this.dataWatcher.updateObject(DATA_TALK, Byte.valueOf((byte) (talkAllowed ? 1 : 0)));
-    }
-
-    @Override
-    public int getTotalArmorValue() {
-
-        ItemStack stack = this.getEquipmentInSlot(1);
-        if (stack != null) {
-            ItemArmor helmet = (ItemArmor) stack.getItem();
-            int k = 0;
-            for (int i = 0; i < 4; ++i) {
-                k += helmet.getArmorMaterial().getDamageReductionAmount(i);
-            }
-            return k;
+      } else if (player.worldObj.isRemote && !player.isSneaking()) {
+        // Display armor, if any
+        if (helmet != null) {
+          String armorName = StatCollector.translateToLocal(helmet.getItem().getUnlocalizedName(
+              helmet)
+              + ".name");
+          String s = LocalizationHelper.getOtherItemKey(Names.PET_WAND, "state.armor.isWearing");
+          s = String.format(s, this.getPetName(), armorName, this.getTotalArmorValue());
+          PlayerHelper.addChatMessage(player, s);
+        } else {
+          String s = LocalizationHelper.getOtherItemKey(Names.PET_WAND, "state.armor.noArmor");
+          s = String.format(s, this.getPetName());
+          PlayerHelper.addChatMessage(player, s);
         }
-        else {
-            return 0;
+      }
+    } else if (state == PetWand.State.CARRY) {
+      // TODO
+    } else if (state == PetWand.State.TALK) {
+      // Toggle talk mode.
+      if (!player.worldObj.isRemote) {
+        boolean allowed = !this.getAllowTalk();
+        this.setAllowTalk(allowed);
+        if (allowed) {
+          PlayerHelper.addChatMessage(player, LocalizationHelper.getPetTalk(this, "talk.on"));
+        } else {
+          PlayerHelper.addChatMessage(player, LocalizationHelper.getPetTalk(this, "talk.off"));
         }
+      }
+    } else if (state == PetWand.State.NONE) {
+      // Do nothing.
+    } else {
+      LogHelper.warning("Failed to handle an unknown Pet Wand state: " + state.name());
     }
+  }
 
-    @Override
-    public boolean interact(EntityPlayer player) {
+  @Override
+  public boolean isAIEnabled() {
 
-        ItemStack stack = player.inventory.getCurrentItem();
+    return true;
+  }
 
-        if (this.isTamed()) {
-            if (stack != null) {
-                // Pet wand?
-                if (stack.getItem() instanceof PetWand) {
-                    handlePetWand(player, stack);
-                    return true;
-                }
-                // Heal with food?
-                // Dye?
-                // Armor?
-                if (stack.getItem() instanceof ItemArmor && this.getEquipmentInSlot(1) == null) {
-                    ItemArmor armor = (ItemArmor) stack.getItem();
-                    if (armor.armorType == 0) {
-                        this.setCurrentItemOrArmor(1, stack);
-                        // Display newly equipped armor!
-                        if (this.worldObj.isRemote) {
-                            String armorName = StatCollector.translateToLocal(stack.getItem().getUnlocalizedName(stack) + ".name");
-                            String s = LocalizationHelper.getOtherItemKey(Names.PET_WAND, "state.armor.isWearing");
-                            s = String.format(s, this.getPetName(), armorName, this.getTotalArmorValue());
-                            PlayerHelper.addChatMessage(player, s);
-                        }
-                        --stack.stackSize;
-                        return true;
-                    }
-                }
-            }
+  @Override
+  public boolean isBreedingItem(ItemStack stack) {
 
-            if (this.func_152114_e(player) && !this.worldObj.isRemote && !this.isBreedingItem(stack)) {
-                this.aiSit.setSitting(!this.isSitting());
-                if (this.isSitting()) {
-                    PlayerHelper.addChatMessage(player, LocalizationHelper.getPetTalk(this, "following"));
-                }
-                else {
-                    PlayerHelper.addChatMessage(player, LocalizationHelper.getPetTalk(this, "sitting"));
-                }
-                this.isJumping = false;
-                this.setPathToEntity((PathEntity) null);
-                this.setTarget((Entity) null);
-                this.setAttackTarget((EntityLivingBase) null);
-            }
-        }
+    return false;
+  }
 
-        return super.interact(player);
+  @Override
+  public void onLivingUpdate() {
+
+    super.onLivingUpdate();
+
+    // Regenerate health
+    if (--timerHealthRegen <= 0) {
+      timerHealthRegen = Config.PET_REGEN_DELAY;
+      this.heal(1);
     }
+  }
 
-    private void handlePetWand(EntityPlayer player, ItemStack stack) {
+  public String getPetName() {
 
-        PetWand.State state = PetWand.getState(stack);
-
-        if (state == PetWand.State.ARMOR) {
-            ItemStack helmet = this.getEquipmentInSlot(1);
-            if (!player.worldObj.isRemote && player.isSneaking()) {
-                // Remove armor
-                if (helmet != null) {
-                    helmet.stackSize = 1;
-                    PlayerHelper.addItemToInventoryOrDrop(player, helmet);
-                    this.setCurrentItemOrArmor(1, (ItemStack) null);
-                }
-            }
-            else if (player.worldObj.isRemote && !player.isSneaking()) {
-                // Display armor, if any
-                if (helmet != null) {
-                    String armorName = StatCollector.translateToLocal(helmet.getItem().getUnlocalizedName(helmet) + ".name");
-                    String s = LocalizationHelper.getOtherItemKey(Names.PET_WAND, "state.armor.isWearing");
-                    s = String.format(s, this.getPetName(), armorName, this.getTotalArmorValue());
-                    PlayerHelper.addChatMessage(player, s);
-                }
-                else {
-                    String s = LocalizationHelper.getOtherItemKey(Names.PET_WAND, "state.armor.noArmor");
-                    s = String.format(s, this.getPetName());
-                    PlayerHelper.addChatMessage(player, s);
-                }
-            }
-        }
-        else if (state == PetWand.State.CARRY) {
-            // TODO
-        }
-        else if (state == PetWand.State.TALK) {
-            // Toggle talk mode.
-            if (!player.worldObj.isRemote) {
-                boolean allowed = !this.getAllowTalk();
-                this.setAllowTalk(allowed);
-                if (allowed) {
-                    PlayerHelper.addChatMessage(player, LocalizationHelper.getPetTalk(this, "talk.on"));
-                }
-                else {
-                    PlayerHelper.addChatMessage(player, LocalizationHelper.getPetTalk(this, "talk.off"));
-                }
-            }
-        }
-        else if (state == PetWand.State.NONE) {
-            // Do nothing.
-        }
-        else {
-            LogHelper.warning("Failed to handle an unknown Pet Wand state: " + state.name());
-        }
+    if (this.hasCustomNameTag()) {
+      return this.getCustomNameTag();
+    } else {
+      return LocalizationHelper.getMiscText("Pet.NoName");
     }
+  }
 
-    @Override
-    public boolean isAIEnabled() {
+  @Override
+  public boolean func_142018_a(EntityLivingBase target, EntityLivingBase owner) {
 
-        return true;
-    }
+    if (!(target instanceof EntityCreeper) && !(target instanceof EntityGhast)) {
+      if (target instanceof EntityTameable) {
+        EntityTameable entityTameable = (EntityTameable) target;
 
-    @Override
-    public boolean isBreedingItem(ItemStack stack) {
-
-        return false;
-    }
-
-    @Override
-    public void onLivingUpdate() {
-
-        super.onLivingUpdate();
-
-        // Regenerate health
-        if (--timerHealthRegen <= 0) {
-            timerHealthRegen = Config.PET_REGEN_DELAY.value;
-            this.heal(1);
+        if (entityTameable.isTamed() && entityTameable.getOwner() == owner) {
+          return false;
         }
+      }
+
+      return target instanceof EntityPlayer && owner instanceof EntityPlayer
+          && !((EntityPlayer) owner).canAttackPlayer((EntityPlayer) target) ? false
+          : !(target instanceof EntityHorse) || !((EntityHorse) target).isTame();
+    } else {
+      return false;
     }
+  }
 
-    public String getPetName() {
+  @Override
+  public void readEntityFromNBT(NBTTagCompound tags) {
 
-        if (this.hasCustomNameTag()) {
-            return this.getCustomNameTag();
-        }
-        else {
-            return LocalizationHelper.getMiscText("Pet.NoName");
-        }
-    }
+    super.readEntityFromNBT(tags);
+    this.setAllowTalk(tags.getBoolean("TalkAllowed"));
+  }
 
-    @Override
-    public boolean func_142018_a(EntityLivingBase target, EntityLivingBase owner) {
+  @Override
+  public void writeEntityToNBT(NBTTagCompound tags) {
 
-        if (!(target instanceof EntityCreeper) && !(target instanceof EntityGhast)) {
-            if (target instanceof EntityTameable) {
-                EntityTameable entityTameable = (EntityTameable) target;
-
-                if (entityTameable.isTamed() && entityTameable.getOwner() == owner) {
-                    return false;
-                }
-            }
-
-            return target instanceof EntityPlayer && owner instanceof EntityPlayer
-                    && !((EntityPlayer) owner).canAttackPlayer((EntityPlayer) target) ? false : !(target instanceof EntityHorse)
-                    || !((EntityHorse) target).isTame();
-        }
-        else {
-            return false;
-        }
-    }
-    
-    @Override
-    public void readEntityFromNBT(NBTTagCompound tags) {
-
-        super.readEntityFromNBT(tags);
-        this.setAllowTalk(tags.getBoolean("TalkAllowed"));
-    }
-    
-    @Override
-    public void writeEntityToNBT(NBTTagCompound tags) {
-        
-        super.writeEntityToNBT(tags);
-        tags.setBoolean("TalkAllowed", this.getAllowTalk());
-    }
+    super.writeEntityToNBT(tags);
+    tags.setBoolean("TalkAllowed", this.getAllowTalk());
+  }
 }

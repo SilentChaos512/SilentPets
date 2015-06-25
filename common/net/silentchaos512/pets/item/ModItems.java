@@ -7,26 +7,27 @@ import net.silentchaos512.pets.recipe.NamePlateRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ModItems {
-    
-    public final static IRecipe recipeNamePlate = new NamePlateRecipe();
 
-	public static void init() {
-		
-	    SRegistry.registerItem(PetWand.class, Names.PET_WAND);
-	    SRegistry.registerItem(MultiItem.class, Names.MULTI_ITEM);
-	    SRegistry.registerItem(PetSummon.class, Names.PET_SUMMON);
-	    SRegistry.registerItem(NamePlate.class, Names.NAME_PLATE);
-	}
-	
-    public static void initItemRecipes() {
+  public static final IRecipe recipeNamePlate = new NamePlateRecipe();
+  public static PetWand petWand;
+  public static MultiItem multiItem;
+  public static PetSummon petSummon;
+  public static NamePlate namePlate;
 
-        GameRegistry.addRecipe(recipeNamePlate);
-    }
+  public static void init() {
 
-    public static void addRandomChestGenLoot() {
+    petWand = (PetWand) SRegistry.registerItem(PetWand.class, Names.PET_WAND);
+    multiItem = (MultiItem) SRegistry.registerItem(MultiItem.class, Names.MULTI_ITEM);
+    petSummon = (PetSummon) SRegistry.registerItem(PetSummon.class, Names.PET_SUMMON);
+    namePlate = (NamePlate) SRegistry.registerItem(NamePlate.class, Names.NAME_PLATE);
+  }
 
-        // TODO Auto-generated method stub
-        
-    }
+  public static void initItemRecipes() {
 
+    GameRegistry.addRecipe(recipeNamePlate);
+  }
+
+  public static void addRandomChestGenLoot() {
+
+  }
 }
