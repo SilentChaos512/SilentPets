@@ -27,54 +27,54 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION_NUMBER)
 public class SilentPets {
 
-  public Random random = new Random();
-
-  @Instance(Reference.MOD_ID)
-  public static SilentPets instance;
-
-  @SidedProxy(clientSide = "net.silentchaos512.pets.core.proxy.ClientProxy", serverSide = "net.silentchaos512.pets.core.proxy.CommonProxy")
-  public static CommonProxy proxy;
-
-  @EventHandler
-  public void preInit(FMLPreInitializationEvent event) {
-
-    Config.init(event.getSuggestedConfigurationFile());
-
-    ModBlocks.init();
-    ModItems.init();
-    PetStats.init();
-    ModEntities.init();
-
-    Config.save();
-  }
-
-  @EventHandler
-  public void load(FMLInitializationEvent event) {
+    public Random random = new Random();
     
-    SRegistry.addRecipesAndOreDictEntries();
-    ModItems.initItemRecipes();
-    ModItems.addRandomChestGenLoot();
-
-    proxy.registerTileEntities();
-    proxy.registerRenderers();
-    proxy.registerKeyHandlers();
+    @Instance(Reference.MOD_ID)
+    public static SilentPets instance;
     
-    MinecraftForge.EVENT_BUS.register(new PetsEventHandler());
-    FMLCommonHandler.instance().bus().register(new PetsEventHandler());
-  }
+    @SidedProxy(clientSide = "net.silentchaos512.pets.core.proxy.ClientProxy", serverSide = "net.silentchaos512.pets.core.proxy.CommonProxy")
+    public static CommonProxy proxy;
+    
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
 
-  @EventHandler
-  public void postInit(FMLPostInitializationEvent event) {
-
-    SRegistry.addThaumcraftStuff();
-  }
-
-  public static CreativeTabs tabSilentPets = new CreativeTabs("tabSilentPets") {
-
-    @Override
-    public Item getTabIconItem() {
-
-      return ModItems.multiItem;
+        Config.init(event.getSuggestedConfigurationFile());
+        
+        ModBlocks.init();
+        ModItems.init();
+        PetStats.init();
+        ModEntities.init();
+        
+        ModItems.initItemRecipes();
+        
+        SRegistry.addRecipesAndOreDictEntries();
+        ModItems.addRandomChestGenLoot();
+        
+        Config.save();
+        
+        MinecraftForge.EVENT_BUS.register(new PetsEventHandler());
+        FMLCommonHandler.instance().bus().register(new PetsEventHandler());
     }
-  };
+    
+    @EventHandler
+    public void load(FMLInitializationEvent event) {
+    
+        proxy.registerTileEntities();
+        proxy.registerRenderers();
+        proxy.registerKeyHandlers();
+    }
+    
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+
+        SRegistry.addThaumcraftStuff();
+    }
+    
+    public static CreativeTabs tabSilentPets = new CreativeTabs("tabSilentPets") {
+        
+        @Override
+        public Item getTabIconItem() {
+            return SRegistry.getItem(Names.MULTI_ITEM);
+        }
+    };
 }
