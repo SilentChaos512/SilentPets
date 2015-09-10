@@ -1,8 +1,10 @@
 package net.silentchaos512.pets.item;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,7 +31,6 @@ import net.silentchaos512.pets.entity.PetPig;
 import net.silentchaos512.pets.entity.PetSheep;
 import net.silentchaos512.pets.lib.Names;
 import net.silentchaos512.pets.lib.Strings;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class PetSummon extends ItemSG {
 
@@ -64,9 +65,9 @@ public class PetSummon extends ItemSG {
 
   public static final int MAX_PETS = 32;
   /**
-   * Holds data on all registered pets. The length of the array is arbitrary.
+   * Holds data on all registered pets.
    */
-  public static final PetData[] pets = new PetData[MAX_PETS];
+  public static final ArrayList<PetData> PETS = new ArrayList<PetData>();
 
   public PetSummon() {
 
@@ -80,14 +81,20 @@ public class PetSummon extends ItemSG {
   @Override
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
 
-    if (pets[stack.getItemDamage()] != null) {
-      list.add(LocalizationHelper.getEntityName(pets[stack.getItemDamage()].name));
+    int meta = stack.getItemDamage();
+    if (meta < 0 || meta >= PETS.size()) {
+      list.add(LocalizationHelper.getOtherItemKey(itemName, "Invalid"));
+    } else {
+      PetData petData = PETS.get(meta);
+      if (petData != null) {
+        list.add(LocalizationHelper.getEntityName(petData.name));
+      }
     }
   }
 
   public static void addPet(Class<? extends EntityPet> pet, String name, int id) {
 
-    pets[id] = new PetData(pet, name, id);
+    PETS.add(new PetData(pet, name, id));
   }
 
   @Override
@@ -137,8 +144,9 @@ public class PetSummon extends ItemSG {
 
   public static int getIdForPet(Class<? extends EntityPet> pet) {
 
-    for (int i = 0; i < pets.length; ++i) {
-      if (pets[i] != null && pets[i].clazz == pet) {
+    for (int i = 0; i < PETS.size(); ++i) {
+      PetData petData = PETS.get(i);
+      if (petData != null && petData.clazz == pet) {
         return i;
       }
     }
@@ -148,8 +156,8 @@ public class PetSummon extends ItemSG {
 
   public static PetData getPet(int id) {
 
-    if (id >= 0 && id < pets.length) {
-      return pets[id];
+    if (id >= 0 && id < PETS.size()) {
+      return PETS.get(id);
     } else {
       return null;
     }
@@ -157,8 +165,9 @@ public class PetSummon extends ItemSG {
 
   public static ItemStack getStackForPet(Entity pet) {
 
-    for (int i = 0; i < pets.length; ++i) {
-      if (pets[i] != null && pets[i].clazz == pet.getClass()) {
+    for (int i = 0; i < PETS.size(); ++i) {
+      PetData petData = PETS.get(i);
+      if (petData != null && petData.clazz == pet.getClass()) {
         return new ItemStack(SRegistry.getItem(Names.PET_SUMMON), 1, i);
       }
     }
@@ -169,8 +178,8 @@ public class PetSummon extends ItemSG {
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-    for (int i = 0; i < pets.length; ++i) {
-      if (pets[i] != null) {
+    for (int i = 0; i < PETS.size(); ++i) {
+      if (PETS.get(i) != null) {
         list.add(new ItemStack(this, 1, i));
       }
     }
@@ -180,7 +189,9 @@ public class PetSummon extends ItemSG {
   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
       int side, float hitX, float hitY, float hitZ) {
 
-    if (!world.isRemote && pets[stack.getItemDamage()] != null) {
+    int meta = stack.getItemDamage();
+    PetData petData = PETS.get(meta);
+    if (!world.isRemote && petData != null) {
       if (!player.capabilities.isCreativeMode) {
         --stack.stackSize;
       }
@@ -197,8 +208,7 @@ public class PetSummon extends ItemSG {
 
       // Create pet entity.
       try {
-        PetData data = pets[stack.getItemDamage()];
-        Constructor<?> constructor = data.getPetClass().getDeclaredConstructor(World.class);
+        Constructor<?> constructor = petData.getPetClass().getDeclaredConstructor(World.class);
         EntityPet pet = (EntityPet) constructor.newInstance(world);
 
         // Set position, spawn in world.
@@ -227,9 +237,10 @@ public class PetSummon extends ItemSG {
   public void registerIcons(IIconRegister reg) {
 
     String s;
-    for (int i = 0; i < pets.length; ++i) {
-      if (pets[i] != null) {
-        s = pets[i].name.substring(4);
+    for (int i = 0; i < PETS.size(); ++i) {
+      PetData petData = PETS.get(i);
+      if (petData != null) {
+        s = petData.name.substring(4);
         icons[i] = reg.registerIcon(Strings.RESOURCE_PREFIX + this.itemName + "_" + s);
       }
     }
