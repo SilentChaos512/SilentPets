@@ -20,53 +20,54 @@ import net.silentchaos512.pets.lib.PetStats;
 
 public class PetCow extends EntityPet {
 
-    public PetCow(World world) {
+  public PetCow(World world) {
 
-        super(world);
-        
-        entityName = "cow";
-        this.stats = PetStats.chicken;
-        this.applyPetStats();
+    super(world);
 
-        this.setSize(0.9F, 1.3F);
-        this.getNavigator().setAvoidsWater(true);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, true));
-        this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-        this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
-        this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
+    entityName = "cow";
+
+    this.setSize(0.9F, 1.3F);
+    this.getNavigator().setAvoidsWater(true);
+    this.tasks.addTask(0, new EntityAISwimming(this));
+    this.tasks.addTask(2, this.aiSit);
+    this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
+    this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, true));
+    this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+    this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
+    this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+    this.tasks.addTask(7, new EntityAILookIdle(this));
+    this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+    this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
+    this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
+  }
+
+  @Override
+  protected void applyEntityAttributes() {
+
+    super.applyEntityAttributes();
+    PetStats stats = PetStats.cow;
+    this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage)
+        .setBaseValue(stats.damage);
+    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(stats.health);
+    this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(stats.speed);
+  }
+
+  @Override
+  public boolean interact(EntityPlayer player) {
+
+    ItemStack stack = player.inventory.getCurrentItem();
+
+    if (stack != null && stack.getItem() == Items.bucket && !player.capabilities.isCreativeMode) {
+      if (stack.stackSize-- == 1) {
+        player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(
+            Items.milk_bucket));
+      } else if (!player.inventory.addItemStackToInventory(new ItemStack(Items.milk_bucket))) {
+        player.dropPlayerItemWithRandomChoice(new ItemStack(Items.milk_bucket, 1, 0), false);
+      }
+
+      return true;
+    } else {
+      return super.interact(player);
     }
-    
-    @Override
-    protected void applyEntityAttributes() {
-
-        this.stats = PetStats.cow;
-        super.applyEntityAttributes();
-    }
-    
-    @Override
-    public boolean interact(EntityPlayer player) {
-        
-        ItemStack stack = player.inventory.getCurrentItem();
-
-        if (stack != null && stack.getItem() == Items.bucket && !player.capabilities.isCreativeMode) {
-            if (stack.stackSize-- == 1) {
-                player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(Items.milk_bucket));
-            }
-            else if (!player.inventory.addItemStackToInventory(new ItemStack(Items.milk_bucket))) {
-                player.dropPlayerItemWithRandomChoice(new ItemStack(Items.milk_bucket, 1, 0), false);
-            }
-            
-            return true;
-        }
-        else {
-            return super.interact(player);
-        }
-    }
+  }
 }

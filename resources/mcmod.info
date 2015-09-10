@@ -3,8 +3,8 @@
   "modid": "SilentPets",
   "name": "Silent's Pets",
   "description": "Adds a wider variety of tameable animals.",
-  "version": "0.1.03",
-  "mcversion": "1.7.10",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authors": [

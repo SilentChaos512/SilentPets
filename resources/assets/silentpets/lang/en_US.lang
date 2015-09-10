@@ -2,13 +2,6 @@
 
 itemGroup.tabSilentPets=Silent's Pets
 
-# Block localizations
-
-tile.silentpets:example.name=Example
-tile.silentpets:example.desc=Example description
-
-
-
 # Item localizations
 
 item.silentpets:MossyEssence.name=Mossy Essence
@@ -16,6 +9,9 @@ item.silentpets:MossyEssence.desc=Yuck.
 
 item.silentpets:NamePlate.name=Name Plate
 item.silentpets:NamePlate.desc=Can name items or entities.
+
+item.silentpets:PetCarrier.name=Pet Carrier
+item.silentpets:PetCarrier.desc=Created by the Pet Wand in carry mode.
 
 item.silentpets:PetEssence.name=Pet Essence
 item.silentpets:PetEssence.desc=Made of sugar and rainbows.
@@ -26,12 +22,12 @@ item.silentpets:PetEssenceRaw.desc=Kill some things to get it.
 item.silentpets:PetSummon.name=Pet Summon
 item.silentpets:PetSummon.desc=Makes new friends.
 
-item.silentpets:PetWand.name=Pet Wand (WIP)
+item.silentpets:PetWand.name=Pet Wand
 item.silentpets:PetWand.desc=Tells your BFFs what to do.
 item.silentpets:PetWand.state.armor.name=Pet Wand - Armor
 item.silentpets:PetWand.state.armor.isWearing=%s is wearing %s (%s protection).
 item.silentpets:PetWand.state.armor.noArmor=%s has no armor!
-item.silentpets:PetWand.state.carry.name=Pet Wand - Carry (NC)
+item.silentpets:PetWand.state.carry.name=Pet Wand - Carry (WIP)
 item.silentpets:PetWand.state.talk.name=Pet Wand - Talk
 
 item.silentpets:PigLeather.name=Pig Leather
@@ -72,19 +68,22 @@ talk.silentpets:death.cactus0=%s sat on a cactus.
 talk.silentpets:death.cactus1=%s was poked by a cactus.
 
 talk.silentpets:death.drown0=%s drowned.
-talk.silentpets:death.drown1=%s stayed under water too long.
+talk.silentpets:death.drown1=%s forgot to breath.
 
 talk.silentpets:death.fall0=%s hit the ground too hard.
+talk.silentpets:death.fall1=%s forgot about gravity.
 
 talk.silentpets:death.indirectMagic0=%s was killed by magic.
 
 talk.silentpets:death.inFire0=%s roasted in a fire.
+talk.silentpets:death.inFire1=%s died in a fire.
 
 talk.silentpets:death.inWall0=%s suffocated in a wall.
 talk.silentpets:death.inWall1=%s died in a wall.
 
 talk.silentpets:death.lava0=%s tried to swim in lava.
 talk.silentpets:death.lava1=%s took a lava bath.
+talk.silentpets:death.lava2=%s walked into lava. Again.
 
 talk.silentpets:death.magic0=%s was killed by magic.
 
@@ -92,6 +91,7 @@ talk.silentpets:death.onFire0=%s went up in flames.
 talk.silentpets:death.onFire1=%s burnt to a crisp.
 
 talk.silentpets:death.outOfWorld0=%s fell out of the world.
+talk.silentpets:death.outOfWorld1=%s walked into the void.
 
 talk.silentpets:death.wither=%s withered away.
 
