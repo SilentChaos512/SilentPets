@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: "forge"
 
-version = "0.2.00"
+version = "0.2.01"
 group = "net.silentchaos512.pets"
 archivesBaseName = "SilentPets-1.7.10"
 

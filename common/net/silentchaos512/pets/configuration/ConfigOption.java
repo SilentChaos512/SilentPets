@@ -1,6 +1,7 @@
 package net.silentchaos512.pets.configuration;
 
 import net.minecraftforge.common.config.Configuration;
+import net.silentchaos512.pets.core.util.LogHelper;
 
 public abstract class ConfigOption {
 

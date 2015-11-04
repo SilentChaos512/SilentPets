@@ -8,14 +8,22 @@ import net.silentchaos512.pets.core.util.LogHelper;
 public class Config {
 
   /*
-   * Misc
+   * Items
    */
 
   public static ConfigOptionDouble PET_ESSENCE_DROP_CHANCE = new ConfigOptionDouble(
       "PetEssence.DropChance", 0.15);
-  public static ConfigOptionInt PET_REGEN_DELAY = new ConfigOptionInt("Pet.RegenDelay", 60);
   public static ConfigOptionDouble PET_SUMMON_DROP_CHANCE = new ConfigOptionDouble(
       "PetSummon.DropChance", 0.25);
+  public static ConfigOptionInt PET_SUMMON_LOOT_WEIGHT = new ConfigOptionInt(
+      "PetSummon.LootChestWeight", 6);
+
+  /*
+   * Misc
+   */
+
+  public static ConfigOptionInt PET_REGEN_DELAY = new ConfigOptionInt("Pet.RegenDelay", 60);
+
   public static ConfigOptionBoolean PET_IS_COSMETIC = new ConfigOptionBoolean("Pet.IsCosmetic",
       false);
   public static ConfigOptionBoolean PET_FRIENDLY_FIRE = new ConfigOptionBoolean("Pet.FriendlyFire",
@@ -59,10 +67,10 @@ public class Config {
        */
       PET_ESSENCE_DROP_CHANCE.loadValue(c, CATEGORY_ITEM_PROPERTIES,
           "The probability of a mob dropping Pet Essence on death.");
-      PET_REGEN_DELAY.loadValue(c, CATEGORY_PET,
-          "The number of ticks pets take the regenerate 1 health.");
       PET_SUMMON_DROP_CHANCE.loadValue(c, CATEGORY_ITEM_PROPERTIES,
           "The probablity of a pet dropping a new summon item on death");
+      PET_REGEN_DELAY.loadValue(c, CATEGORY_PET,
+          "The number of ticks pets take the regenerate 1 health.");
       PET_IS_COSMETIC.loadValue(c, CATEGORY_PET, "If true, pets can not take or deal damage.");
       PET_FRIENDLY_FIRE.loadValue(c, CATEGORY_PET, "If true, pets can be damaged by their owner.");
     } catch (Exception e) {

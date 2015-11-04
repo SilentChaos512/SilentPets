@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
+import net.silentchaos512.pets.configuration.Config;
 import net.silentchaos512.pets.core.registry.SRegistry;
 import net.silentchaos512.pets.item.PetSummon.PetData;
 import net.silentchaos512.pets.lib.Names;
@@ -33,7 +34,7 @@ public class ModItems {
 
     GameRegistry.addRecipe(recipeNamePlate);
   }
-  
+
   public static final String[] chestGenLocations = new String[] { ChestGenHooks.DUNGEON_CHEST,
       ChestGenHooks.MINESHAFT_CORRIDOR, ChestGenHooks.STRONGHOLD_CORRIDOR,
       ChestGenHooks.STRONGHOLD_LIBRARY };
@@ -47,7 +48,8 @@ public class ModItems {
         PetData petData = PetSummon.PETS.get(i);
         if (petData != null) {
           ItemStack stack = new ItemStack(petSummon, 1, i);
-          WeightedRandomChestContent content = new WeightedRandomChestContent(stack, 1, 1, 15);
+          WeightedRandomChestContent content = new WeightedRandomChestContent(stack, 1, 1,
+              Config.PET_SUMMON_LOOT_WEIGHT.value);
           ChestGenHooks.getInfo(chest).addItem(content);
         }
       }
