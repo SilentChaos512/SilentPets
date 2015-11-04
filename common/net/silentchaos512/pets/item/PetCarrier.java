@@ -19,7 +19,7 @@ public class PetCarrier extends ItemSG {
 
   public PetCarrier() {
 
-    this.setMaxStackSize(0);
+    this.setMaxStackSize(1);
     this.setUnlocalizedName(Names.PET_CARRIER);
   }
 
@@ -34,14 +34,14 @@ public class PetCarrier extends ItemSG {
 
     ItemStack stack = new ItemStack(this);
     stack.stackTagCompound = new NBTTagCompound();
-    
+
     String entityId = EntityList.getEntityString(pet);
     stack.stackTagCompound.setString("id", entityId);
     pet.writeEntityToNBT(stack.stackTagCompound);
     if (pet.hasCustomNameTag()) {
       stack.setStackDisplayName(pet.getCustomNameTag());
     }
-    
+
     return stack;
   }
 
@@ -56,7 +56,7 @@ public class PetCarrier extends ItemSG {
     String id = stack.stackTagCompound.getString("id");
 
     if (!world.isRemote) {
-      if (!player.capabilities.isCreativeMode) {
+      if (!player.capabilities.isCreativeMode && stack.stackSize > 0) {
         --stack.stackSize;
       }
 
@@ -72,8 +72,8 @@ public class PetCarrier extends ItemSG {
 
       // Create pet entity.
       try {
-//        PetData data = PetSummon.pets[id];
-//        Constructor<?> constructor = data.getPetClass().getDeclaredConstructor(World.class);
+        // PetData data = PetSummon.pets[id];
+        // Constructor<?> constructor = data.getPetClass().getDeclaredConstructor(World.class);
         // EntityPet pet = (EntityPet) constructor.newInstance(world);
         EntityPet pet = (EntityPet) EntityList.createEntityFromNBT(stack.stackTagCompound, world);
 
@@ -84,13 +84,18 @@ public class PetCarrier extends ItemSG {
         world.spawnEntityInWorld(pet);
 
         // Make it tame and set master.
-//        pet.setTamed(true);
-//        pet.func_152115_b(player.getUniqueID().toString());
-//        world.setEntityState(pet, (byte) 7);
+        // pet.setTamed(true);
+        // pet.func_152115_b(player.getUniqueID().toString());
+        // world.setEntityState(pet, (byte) 7);
 
         // Custom name?
         if (stack.hasDisplayName()) {
           pet.setCustomNameTag(stack.getDisplayName());
+        }
+
+        // Remove empty stack?
+        if (stack.stackSize <= 0) {
+          stack = null;
         }
       } catch (Exception ex) {
         LogHelper.severe("Failed to create a pet.");

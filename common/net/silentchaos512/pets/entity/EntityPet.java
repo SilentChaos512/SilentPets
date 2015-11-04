@@ -247,11 +247,11 @@ public class EntityPet extends EntityTameable {
     } else if (state == PetWand.State.CARRY) {
       // Put pet in a carrier
       // FIXME
-      // if (!player.worldObj.isRemote) {
-      // ItemStack carrier = ModItems.petCarrier.create(this);
-      // PlayerHelper.addItemToInventoryOrDrop(player, carrier);
-      // this.setDead();
-      // }
+      if (!player.worldObj.isRemote) {
+        ItemStack carrier = ModItems.petCarrier.create(this);
+        PlayerHelper.addItemToInventoryOrDrop(player, carrier);
+        this.setDead();
+      }
     } else if (state == PetWand.State.TALK) {
       // Toggle talk mode.
       if (!player.worldObj.isRemote) {
