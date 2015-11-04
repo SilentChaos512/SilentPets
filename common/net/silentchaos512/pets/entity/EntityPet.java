@@ -72,7 +72,7 @@ public class EntityPet extends EntityTameable {
         }
       }
       // reset regen timer
-      timerHealthRegen = Config.PET_REGEN_DELAY.value;
+      timerHealthRegen = Config.PET_INITIAL_REGEN_DELAY.value;
 
       // stop sitting
       Entity entity = source.getEntity();

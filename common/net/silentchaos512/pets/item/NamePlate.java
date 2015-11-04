@@ -7,17 +7,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.silentchaos512.pets.SilentPets;
+import net.silentchaos512.pets.configuration.Config;
 import net.silentchaos512.pets.lib.Names;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class NamePlate extends ItemSG {
 
-    public final static int MAX_DAMAGE = 32;
-
     public NamePlate() {
 
         setMaxStackSize(1);
-        setMaxDamage(MAX_DAMAGE);
+        setMaxDamage(Config.NAME_PLATE_MAX_DAMAGE.value);
         setUnlocalizedName(Names.NAME_PLATE);
     }
 

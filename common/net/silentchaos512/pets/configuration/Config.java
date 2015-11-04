@@ -15,6 +15,7 @@ public class Config {
   public static ConfigOption<Float> PET_SUMMON_DROP_CHANCE;
   public static ConfigOption<Integer> PET_SUMMON_LOOT_WEIGHT;
   public static ConfigOption<Integer> NAME_PLATE_LOOT_WEIGHT;
+  public static ConfigOption<Integer> NAME_PLATE_MAX_DAMAGE;
 
   /*
    * Pets
@@ -72,6 +73,13 @@ public class Config {
       NAME_PLATE_LOOT_WEIGHT.maxValue = Integer.MAX_VALUE;
       NAME_PLATE_LOOT_WEIGHT.comment = "The weight of Name Plates appearing in certain loot chests.";
       NAME_PLATE_LOOT_WEIGHT.value = NAME_PLATE_LOOT_WEIGHT.loadInt(c);
+      
+      NAME_PLATE_MAX_DAMAGE = new ConfigOption<Integer>(category, "MaxDamage", 32);
+      NAME_PLATE_MAX_DAMAGE.minValue = 0;
+      NAME_PLATE_MAX_DAMAGE.maxValue = (int) Short.MAX_VALUE;
+      NAME_PLATE_MAX_DAMAGE.comment = "The max damage of Name Plates (ie, number of uses). Set "
+          + "to 0 for infinite uses.";
+      NAME_PLATE_MAX_DAMAGE.value = NAME_PLATE_MAX_DAMAGE.loadInt(c);
 
       /*
        * Pets
@@ -85,7 +93,7 @@ public class Config {
           + "to disable regeneration.";
       PET_REGEN_DELAY.value = PET_REGEN_DELAY.loadInt(c);
       
-      PET_INITIAL_REGEN_DELAY = new ConfigOption<Integer>(category, "InitialDelay", 600);
+      PET_INITIAL_REGEN_DELAY = new ConfigOption<Integer>(category, "InitialDelay", 300);
       PET_INITIAL_REGEN_DELAY.minValue = 0;
       PET_INITIAL_REGEN_DELAY.maxValue = Integer.MAX_VALUE;
       PET_INITIAL_REGEN_DELAY.comment = "After a pet takes damage, it will take this many ticks "
