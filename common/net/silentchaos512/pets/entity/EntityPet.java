@@ -288,7 +288,7 @@ public class EntityPet extends EntityTameable {
     super.onLivingUpdate();
 
     // Regenerate health
-    if (--timerHealthRegen <= 0) {
+    if (Config.PET_REGEN_DELAY.value > 0 && --timerHealthRegen <= 0) {
       timerHealthRegen = Config.PET_REGEN_DELAY.value;
       this.heal(1);
     }
